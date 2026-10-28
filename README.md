@@ -102,19 +102,24 @@ practical/
 ```
 
 The warmup data files are stored directly in `practical/data_warmup/`. For the
-DepMap analysis, download the cell-model metadata, CRISPR gene effects, and
-gene-expression matrix from [DepMap Public 24Q4, version 1](https://doi.org/10.25452/figshare.plus.27993248.v1):
+DepMap analysis, download the cell-model metadata, CRISPR gene effects,
+gene-expression matrix, and somatic mutations from [DepMap Public 24Q4, version 1](https://doi.org/10.25452/figshare.plus.27993248.v1):
 
 ```bash
 make -C practical/data_depmap
 make -C practical/data_depmap check
 ```
 
-The `check` target downloads missing files and verifies all three against the
+The `check` target downloads missing files and verifies all four against the
 manually recorded reference hashes in `md5sums.txt`. A mismatch causes it to
 fail. Existing files are reused; remove a failed file before downloading it
 again. Downloaded CSV files are ignored by Git. The downloads total about
-936 MB and require `curl`, GNU Make, and `md5sum`.
+1.27 GB and require `curl`, GNU Make, and `md5sum`.
+
+[The KRAS/LUAD exercise](practical/analysis_depmap/README.md) has matching base R
+and Python solutions. Python processing uses the standard library, with
+Matplotlib for plotting. Each version passes one summary table to a separate
+script that writes a PDF.
 
 The original slide exercises use the following legacy project layout.
 [bio-prac.tar.gz](bio-prac.tar.gz) contains a minimal starter project. Extract it with:
