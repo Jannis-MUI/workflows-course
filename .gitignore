@@ -1,0 +1,21 @@
+# Presentation files
+*.pptx
+
+# Downloaded DepMap data
+/practical/data_depmap/*.csv
+
+# Incomplete downloads
+*.part
+*.tmp
+
+# Python cache files and local environments
+__pycache__/
+*.py[cod]
+.venv/
+
+# Editor and operating-system files
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
