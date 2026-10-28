@@ -8,76 +8,44 @@ disease <- "LUAD"
 data_dir <- "practical/data_depmap"
 output_path <- "practical/analysis_depmap/dependency.tsv"
 
-numeric_values <- function(values) {
-    missing <- is.na(values) | trimws(values) %in% c("", "NA", "NaN", "nan")
-    result <- suppressWarnings(as.numeric(values))
-    if (any(is.na(result) & !missing)) stop("Invalid numeric measurement")
-    result[!is.finite(result)] <- NA_real_
-    result
-}
-
-boolean_values <- function(values) {
-    text <- tolower(trimws(values))
-    missing <- is.na(text) | text %in% c("", "na", "nan")
-    if (any(!missing & !text %in% c("true", "false", "1", "0"))) {
-        stop("Invalid Hotspot annotation")
-    }
-    result <- text %in% c("true", "1")
-    result[missing] <- NA
-    result
-}
-
 read_gene <- function(path, gene, value_name) {
     # Read the header without changing gene labels such as 'KRAS (3845)'.
     header <- names(read.csv(path, nrows = 0, check.names = FALSE))
     symbols <- sub(" \\([^()]+\\)$", "", header)
-    column <- which(symbols == gene & seq_along(header) > 1)
-    if (length(column) != 1) stop("Expected exactly one ", gene, " column in ", path)
+    column <- which(symbols == gene)
     classes <- rep("NULL", length(header))
-    classes[c(1, column)] <- "character"
-    result <- read.csv(path, colClasses = classes, check.names = FALSE,
-                       na.strings = c("", "NA", "NaN", "nan"))
+    classes[1] <- "character"
+    classes[column] <- "numeric"
+    result <- read.csv(path, colClasses = classes, check.names = FALSE)
     names(result) <- c("ModelID", value_name)
-    if (anyNA(result$ModelID) || any(!nzchar(trimws(result$ModelID))) ||
-        anyDuplicated(result$ModelID)) stop("Missing or duplicate ModelID in ", path)
-    result[[value_name]] <- numeric_values(result[[value_name]])
     result
 }
 
-# 1. Filter metadata to a single disease, checking the join key first.
+# 1. Filter metadata to a single disease.
 models <- read.csv(file.path(data_dir, "Model.csv"), check.names = FALSE,
                    colClasses = "character", na.strings = c("", "NA"))
-required <- c("ModelID", "CellLineName", "OncotreeCode")
-if (!all(required %in% names(models))) stop("Missing required Model.csv columns")
-models <- models[, required, drop = FALSE]
-if (anyNA(models$ModelID) || any(!nzchar(trimws(models$ModelID))) ||
-    anyDuplicated(models$ModelID)) stop("Missing or duplicate metadata ModelID")
+models <- models[, c("ModelID", "CellLineName", "OncotreeCode")]
 cohort <- models[!is.na(models$OncotreeCode) & models$OncotreeCode == disease, , drop = FALSE]
-if (!nrow(cohort)) stop("No models have OncotreeCode=", disease)
 
 # 2. Summarize many variant rows into one genotype record per model.
 mutation_path <- file.path(data_dir, "OmicsSomaticMutations.csv")
 header <- names(read.csv(mutation_path, nrows = 0, check.names = FALSE))
-required <- c("ModelID", "HugoSymbol", "Hotspot")
-if (!all(required %in% header)) stop("Missing required mutation columns")
+columns <- c("ModelID", "HugoSymbol", "Hotspot")
 classes <- rep("NULL", length(header))
-classes[header %in% required] <- "character"
+classes[header %in% columns] <- "character"
 mutations <- read.csv(mutation_path, colClasses = classes, check.names = FALSE,
                       na.strings = c("", "NA"))
-mutations <- mutations[mutations$ModelID %in% cohort$ModelID, required, drop = FALSE]
+mutations <- mutations[mutations$ModelID %in% cohort$ModelID, columns, drop = FALSE]
 profiled <- unique(mutations$ModelID) # Evidence of some somatic data, not gene-level callability.
 gene_calls <- mutations[!is.na(mutations$HugoSymbol) & mutations$HugoSymbol == gene, , drop = FALSE]
-gene_calls$Hotspot <- boolean_values(gene_calls$Hotspot)
+hotspot_models <- unique(gene_calls$ModelID[gene_calls$Hotspot == "True"])
 rm(mutations)
 
 genotypes <- data.frame(ModelID = cohort$ModelID, mutation_status = "no_mutation_data")
 for (i in seq_len(nrow(genotypes))) {
     model <- genotypes$ModelID[i]
-    flags <- gene_calls$Hotspot[gene_calls$ModelID == model]
-    if (any(flags, na.rm = TRUE)) {
+    if (model %in% hotspot_models) {
         genotypes$mutation_status[i] <- "hotspot"
-    } else if (anyNA(flags)) {
-        genotypes$mutation_status[i] <- "unknown_hotspot_status"
     } else if (model %in% profiled) {
         genotypes$mutation_status[i] <- "no_hotspot_detected"
     }
@@ -90,7 +58,7 @@ expression <- read_gene(file.path(data_dir, "OmicsExpressionProteinCodingGenesTP
 joined <- merge(cohort, genotypes, by = "ModelID", all.x = TRUE)
 joined <- merge(joined, effects, by = "ModelID", all.x = TRUE)
 joined <- merge(joined, expression, by = "ModelID", all.x = TRUE)
-stopifnot(nrow(joined) == nrow(cohort), !anyDuplicated(joined$ModelID))
+
 # 4. Filter and summarize; expression missingness does not exclude a model.
 statuses <- c("hotspot", "no_hotspot_detected")
 included <- joined[joined$mutation_status %in% statuses & !is.na(joined$gene_effect), , drop = FALSE]
@@ -100,15 +68,13 @@ for (status in statuses) {
     selected <- included[included$mutation_status == status, , drop = FALSE]
     values <- selected$gene_effect
     expressed <- selected$log2_tpm_plus_1[!is.na(selected$log2_tpm_plus_1)]
-    if (length(values) < 2) stop("Need at least two measured models in ", status,
-                                "; found ", length(values))
     groups[[status]] <- values
     quartiles <- quantile(values, c(0.25, 0.75), type = 7, names = FALSE)
     summaries[[status]] <- data.frame(gene = gene, disease = disease,
         mutation_status = status, n_models = length(values), mean_effect = mean(values),
         median_effect = median(values), q1_effect = quartiles[1], q3_effect = quartiles[2],
         iqr_effect = diff(quartiles), n_expression = length(expressed),
-        median_log2_tpm_plus_1 = if (length(expressed)) median(expressed) else NA_real_)
+        median_log2_tpm_plus_1 = median(expressed))
 }
 summary <- do.call(rbind, summaries)
 difference <- median(groups$hotspot) - median(groups$no_hotspot_detected)

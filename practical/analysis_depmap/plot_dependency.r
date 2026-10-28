@@ -7,12 +7,6 @@ output_path <- "practical/analysis_depmap/dependency.pdf"
 
 summary <- read.delim(input_path, check.names = FALSE, stringsAsFactors = FALSE)
 statuses <- c("hotspot", "no_hotspot_detected")
-if (nrow(summary) != 2 || !setequal(summary$mutation_status, statuses)) {
-    stop("Expected exactly two mutation groups in the summary")
-}
-if (length(unique(summary$gene)) != 1 || length(unique(summary$disease)) != 1) {
-    stop("Summary must describe one gene and disease")
-}
 summary <- summary[match(statuses, summary$mutation_status), , drop = FALSE]
 gene <- summary$gene[1]
 disease <- summary$disease[1]

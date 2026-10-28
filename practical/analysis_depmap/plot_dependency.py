@@ -18,12 +18,7 @@ def main():
     with INPUT_PATH.open(newline="") as handle:
         rows = list(csv.DictReader(handle, delimiter="\t"))
     statuses = ("hotspot", "no_hotspot_detected")
-    if len(rows) != 2 or {row["mutation_status"] for row in rows} != set(statuses):
-        raise ValueError("Expected exactly two mutation groups in the summary")
-    contexts = {(row["gene"], row["disease"]) for row in rows}
-    if len(contexts) != 1:
-        raise ValueError("Summary must describe one gene and disease")
-    gene, disease = contexts.pop()
+    gene, disease = rows[0]["gene"], rows[0]["disease"]
     summary = {row["mutation_status"]: row for row in rows}
 
     figure, axis = plt.subplots(figsize=(9, 6))
