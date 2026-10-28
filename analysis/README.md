@@ -99,7 +99,7 @@ causality, statistical significance, or sensitivity to a particular drug.
 Work through the exercises in order, using either the R or Python scripts:
 
 1. [Scripts](EXERCISE_1-Scripts.md): permissions, command-line arguments, PIK3CA,
-   and BRCA versus LUAD.
+   BRCA versus LUAD, and a dplyr/pandas rewrite shared through a pull request.
 2. [Slurm](EXERCISE_2-Slurm.md): submit calculation and plotting jobs, inspect
    resources, and run independent analyses.
 3. [Workflows](EXERCISE_3-Workflows.md): complete the Snakefile for KRAS/LUAD,

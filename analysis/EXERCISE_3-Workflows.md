@@ -27,9 +27,9 @@ with `make -C ../data check`.
 4. **Execute through Slurm.** With the Snakemake Slurm executor plugin installed,
    configure the course partition/account and each rule's CPU, memory, and
    runtime requirements. Run with `snakemake --executor slurm --jobs 1` and
-   inspect the submitted jobs and logs. Let Snakemake submit the calculation and
-   plotting commands directly instead of submitting the earlier batch wrappers
-   from inside workflow jobs.
+   inspect the submitted jobs and logs. Let Snakemake submit each step and
+   start plotting once calculation has completed successfully. Compare this
+   with the manual checks and submissions in the Slurm exercise.
 
 Cluster configuration is described in the
 [Snakemake Slurm executor documentation](https://snakemake.github.io/snakemake-plugin-catalog/plugins/executor/slurm.html).

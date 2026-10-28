@@ -28,4 +28,19 @@ Run the scripts from `analysis/` and choose either R or Python.
    `ILC`. Save each gene/disease combination in its own directory, for example
    `results/PIK3CA/BRCA/compare_dependency.tsv` and
    `results/PIK3CA/BRCA/plot_dependency.pdf`.
-
+5. **Rewrite with dplyr or pandas.** Rewrite `compare_dependency.r` using
+   **dplyr**, or `compare_dependency.py` using **pandas**. Express the filtering,
+   joins, grouping, and summaries with your chosen library. Keep the same
+   command-line arguments, mutation definitions, missing-data handling, and
+   output columns so the plotting script can still read the table. Save the
+   original KRAS/LUAD summary before rewriting, rerun the calculation, and
+   compare group counts and summary values, allowing for numeric rounding.
+   Which parts become easier to read, and which still need care?
+6. **Share your solution in a pull request.** Fork the original course
+   repository if needed and create a branch for your rewrite. Replace the
+   processing script at its existing path (`analysis/compare_dependency.r` or
+   `analysis/compare_dependency.py`), commit it, and push the branch to your
+   fork. Open a pull request against the original course repository, focused
+   on that file. Describe the library you used, the main changes, and how you
+   confirmed that the results agree. We will review the code in the different
+   pull requests together and compare the approaches.
