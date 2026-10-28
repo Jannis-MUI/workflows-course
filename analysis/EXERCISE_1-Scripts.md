@@ -1,7 +1,7 @@
 # Exercise 1: Scripts
 
 Start with the setup and analysis description in the [README](README.md).
-Run the scripts from `analysis_depmap/` and choose either R or Python.
+Run the scripts from `analysis/` and choose either R or Python.
 
 1. **Permissions and shebangs.** Inspect the scripts' permissions, make the two
    scripts in your chosen language executable, and run them directly with

@@ -6,10 +6,10 @@ from pathlib import Path
 import statistics
 
 # Edit these values for now. Adding command-line arguments is an exercise.
-# Run this script from practical/analysis_depmap/.
+# Run this script from analysis/.
 GENE = "KRAS"
 DISEASE = "LUAD"
-DATA_DIR = Path("../data_depmap")
+DATA_DIR = Path("../data")
 OUTPUT_PATH = Path("compare_dependency.tsv")
 
 

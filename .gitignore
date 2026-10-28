@@ -2,7 +2,7 @@
 *.pptx
 
 # Downloaded DepMap data
-/practical/data_depmap/*.csv
+/data/*.csv
 
 # Incomplete downloads
 *.part

@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # Plot group medians and IQRs with R's built-in PDF graphics device.
 # Edit these paths for now. Adding command-line arguments is an exercise.
-# Run this script from practical/analysis_depmap/.
+# Run this script from analysis/.
 input_path <- "compare_dependency.tsv"
 output_path <- "plot_dependency.pdf"
 

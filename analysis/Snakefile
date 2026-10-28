@@ -1,5 +1,5 @@
 # Exercise: complete this workflow for the single hardcoded KRAS/LUAD case.
-# Run Snakemake from analysis_depmap/, with the data in ../data_depmap/.
+# Run Snakemake from analysis/, with the data in ../data/.
 # Choose either the R scripts or the Python scripts for both steps.
 # The template is commented out: uncomment and complete each section.
 # No wildcards, gene/tissue expansion, or command-line arguments are needed.

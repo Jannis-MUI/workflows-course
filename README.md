@@ -89,25 +89,26 @@ Nextflow is mentioned as a workflow manager to be covered in a later session.
 The practical files are organized as follows:
 
 ```text
-practical/
-├── analysis_warmup/         # Scripts for the command-line exercises
-├── analysis_depmap/         # Scripts for the cancer dependency analysis
-├── data_warmup/
-│   ├── samples.tsv
-│   ├── tiny.fastq
-│   └── tiny.vcf
-└── data_depmap/
-    ├── Makefile
-    └── md5sums.txt
+./
+├── analysis/               # Scripts and exercises for the cancer dependency analysis
+├── data/                   # Downloaded DepMap files
+│   ├── Makefile
+│   └── md5sums.txt
+└── warmup/                 # Small files for command-line exercises
+    ├── samples.tsv
+    ├── tiny.fastq
+    └── tiny.vcf
 ```
 
-The warmup data files are stored directly in `practical/data_warmup/`. For the
-DepMap analysis, download the cell-model metadata, CRISPR gene effects,
+The sample sheet, FASTQ reads, and VCF records for the command-line warmup are
+stored directly in `warmup/`.
+
+For the DepMap analysis, download the cell-model metadata, CRISPR gene effects,
 gene-expression matrix, and somatic mutations from [DepMap Public 24Q4, version 1](https://doi.org/10.25452/figshare.plus.27993248.v1):
 
 ```bash
-make -C practical/data_depmap
-make -C practical/data_depmap check
+make -C data
+make -C data check
 ```
 
 The `check` target downloads missing files and verifies all four against the
@@ -116,10 +117,11 @@ fail. Existing files are reused; remove a failed file before downloading it
 again. Downloaded CSV files are ignored by Git. The downloads total about
 1.27 GB and require `curl`, GNU Make, and `md5sum`.
 
-[The KRAS/LUAD exercise](practical/analysis_depmap/README.md) has matching base R
+[The KRAS/LUAD exercise](analysis/README.md) has matching base R
 and Python solutions. Python processing uses the standard library, with
 Matplotlib for plotting. Each version passes one summary table to a separate
-script that writes a PDF.
+script that writes a PDF. Run these scripts from `analysis/`;
+the outputs are `compare_dependency.tsv` and `plot_dependency.pdf` in that directory.
 
 The original slide exercises use the following legacy project layout.
 [bio-prac.tar.gz](bio-prac.tar.gz) contains a minimal starter project. Extract it with:

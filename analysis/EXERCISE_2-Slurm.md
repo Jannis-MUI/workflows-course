@@ -2,7 +2,7 @@
 
 Complete the argument and output-path tasks in
 [Exercise 1: Scripts](EXERCISE_1-Scripts.md) before submitting several analyses.
-Keep `analysis_depmap/` as the job working directory so the relative input paths
+Keep `analysis/` as the job working directory so the relative input paths
 resolve as they did interactively.
 
 1. **Submit calculation.** Write a Bash batch script that runs the calculation

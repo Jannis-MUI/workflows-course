@@ -6,11 +6,11 @@ the two outputs `compare_dependency.tsv` and `plot_dependency.pdf`.
 Keep KRAS and LUAD as the script defaults if you have added command-line
 arguments in the earlier exercises.
 
-Run Snakemake from `analysis_depmap/`. Download and verify the inputs first
-with `make -C ../data_depmap check`.
+Run Snakemake from `analysis/`. Download and verify the inputs first
+with `make -C ../data check`.
 
 1. **Connect the scripts.** Complete the supplied `Snakefile` in
-   `analysis_depmap/`, choosing either the R or Python scripts. Define one rule
+   `analysis/`, choosing either the R or Python scripts. Define one rule
    that reads the four DepMap files and produces `compare_dependency.tsv`,
    and another that reads that table and
    produces `plot_dependency.pdf`. Include the corresponding script as an

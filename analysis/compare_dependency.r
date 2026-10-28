@@ -2,10 +2,10 @@
 # Gene hotspot / dependency exercise, using only packages shipped with R.
 
 # Edit these values for now. Adding command-line arguments is an exercise.
-# Run this script from practical/analysis_depmap/.
+# Run this script from analysis/.
 gene <- "KRAS"
 disease <- "LUAD"
-data_dir <- "../data_depmap"
+data_dir <- "../data"
 output_path <- "compare_dependency.tsv"
 
 read_gene <- function(path, gene, value_name) {

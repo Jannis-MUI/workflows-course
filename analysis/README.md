@@ -14,14 +14,14 @@ in each language.
 Enter this directory first. From the repository root:
 
 ```bash
-cd practical/analysis_depmap
+cd analysis
 ```
 
-Run the scripts from `analysis_depmap/`, with the downloaded data in the sibling
-`data_depmap/` directory. Download and verify the four DepMap 24Q4 files first:
+Run the scripts from `analysis/`, with the downloaded data in the sibling
+`data/` directory. Download and verify the four DepMap 24Q4 files first:
 
 ```bash
-make -C ../data_depmap check
+make -C ../data check
 
 Rscript compare_dependency.r
 Rscript plot_dependency.r

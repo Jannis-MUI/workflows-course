@@ -9,7 +9,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # Edit these paths for now. Adding command-line arguments is an exercise.
-# Run this script from practical/analysis_depmap/.
+# Run this script from analysis/.
 INPUT_PATH = Path("compare_dependency.tsv")
 OUTPUT_PATH = Path("plot_dependency.pdf")
 
