@@ -6,11 +6,11 @@ from pathlib import Path
 import statistics
 
 # Edit these values for now. Adding command-line arguments is an exercise.
-# Run this script from the repository root.
+# Run this script from practical/analysis_depmap/.
 GENE = "KRAS"
 DISEASE = "LUAD"
-DATA_DIR = Path("practical/data_depmap")
-OUTPUT_PATH = Path("practical/analysis_depmap/dependency.tsv")
+DATA_DIR = Path("../data_depmap")
+OUTPUT_PATH = Path("compare_dependency.tsv")
 
 
 def read_gene(path, gene):

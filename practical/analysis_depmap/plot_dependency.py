@@ -9,9 +9,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # Edit these paths for now. Adding command-line arguments is an exercise.
-# Run this script from the repository root.
-INPUT_PATH = Path("practical/analysis_depmap/dependency.tsv")
-OUTPUT_PATH = Path("practical/analysis_depmap/dependency.pdf")
+# Run this script from practical/analysis_depmap/.
+INPUT_PATH = Path("compare_dependency.tsv")
+OUTPUT_PATH = Path("plot_dependency.pdf")
 
 
 def main():

@@ -2,11 +2,11 @@
 # Gene hotspot / dependency exercise, using only packages shipped with R.
 
 # Edit these values for now. Adding command-line arguments is an exercise.
-# Run this script from the repository root.
+# Run this script from practical/analysis_depmap/.
 gene <- "KRAS"
 disease <- "LUAD"
-data_dir <- "practical/data_depmap"
-output_path <- "practical/analysis_depmap/dependency.tsv"
+data_dir <- "../data_depmap"
+output_path <- "compare_dependency.tsv"
 
 read_gene <- function(path, gene, value_name) {
     # Read the header without changing gene labels such as 'KRAS (3845)'.

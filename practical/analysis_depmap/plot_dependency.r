@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
 # Plot group medians and IQRs with R's built-in PDF graphics device.
 # Edit these paths for now. Adding command-line arguments is an exercise.
-# Run this script from the repository root.
-input_path <- "practical/analysis_depmap/dependency.tsv"
-output_path <- "practical/analysis_depmap/dependency.pdf"
+# Run this script from practical/analysis_depmap/.
+input_path <- "compare_dependency.tsv"
+output_path <- "plot_dependency.pdf"
 
 summary <- read.delim(input_path, check.names = FALSE, stringsAsFactors = FALSE)
 statuses <- c("hotspot", "no_hotspot_detected")
