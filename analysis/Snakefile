@@ -2,7 +2,8 @@
 # Run Snakemake from analysis/, with the data in ../data/.
 # Choose either the R scripts or the Python scripts for both steps.
 # The template is commented out: uncomment and complete each section.
-# No wildcards, gene/tissue expansion, or command-line arguments are needed.
+# Use the script arguments added in the Scripts exercise; keep KRAS/LUAD defaults.
+# No wildcards or gene/tissue expansion are needed.
 
 # rule all:
 #     input:
@@ -16,6 +17,7 @@
 #         # TODO: name the single summary table written by the script.
 #     shell:
 #         # TODO: run the processing script with its interpreter.
+#         # Pass the rule's declared input/output paths as script arguments.
 
 # rule plot_dependency:
 #     input:
@@ -25,3 +27,4 @@
 #         # TODO: name the single PDF written by the plotting script.
 #     shell:
 #         # TODO: run the plotting script with its interpreter.
+#         # Pass the rule's declared input/output paths as script arguments.

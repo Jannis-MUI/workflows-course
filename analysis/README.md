@@ -103,4 +103,5 @@ Work through the exercises in order, using either the R or Python scripts:
 2. [Slurm](EXERCISE_2-Slurm.md): submit calculation and plotting jobs, inspect
    resources, and run independent analyses.
 3. [Workflows](EXERCISE_3-Workflows.md): complete the Snakefile for KRAS/LUAD,
-   explore dependencies, and run through Slurm.
+   explore dependencies and failures, add a download module, and run through
+   Slurm with a resource profile.
