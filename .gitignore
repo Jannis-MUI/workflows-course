@@ -4,6 +4,10 @@
 # Downloaded DepMap data
 /data/*.csv
 
+# Analysis outputs
+/analysis/compare_dependency.tsv
+/analysis/plot_dependency.pdf
+
 # Incomplete downloads
 *.part
 *.tmp
