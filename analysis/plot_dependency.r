@@ -1,8 +1,11 @@
 #!/usr/bin/env Rscript
-rows <- read.delim("compare_dependency.tsv")
+args <- commandArgs(trailingOnly = TRUE)
+suffix <- if (length(args) > 0) paste0("-", args[1]) else ""
+
+rows <- read.delim(paste0("compare_dependency", suffix, ".tsv"))
 y <- rev(seq_len(nrow(rows)))
 
-pdf("plot_dependency.pdf", height = 4)
+pdf(paste0("plot_dependency", suffix, ".pdf"), height = 4)
 par(mar = c(5, 6, 3, 1))
 plot(rows$median, y, type = "n", yaxt = "n", ylab = "",
      xlim = range(0, rows$lower, rows$upper), ylim = c(0.5, max(y) + 0.5),

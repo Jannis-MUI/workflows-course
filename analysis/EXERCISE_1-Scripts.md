@@ -24,8 +24,8 @@ measured scores and their `is_luad` indicators for each gene before calling it.
    for the fits. Check that the join preserves one row per model before reshaping.
 3. Accept the reference and gene symbols on the command line.
    Compare the LUAD–BRCA result against the starter in your chosen language.
-   Save a copy of the BRCA table before running LUAD–LUSC. Each run writes
-   `compare_dependency.tsv` in the working directory.
+   Run LUAD–LUSC as well. Put the reference code before the extension, as in
+   `compare_dependency-BRCA.tsv`.
 
 ## 3. Run one MCMC fit per worker
 
@@ -45,7 +45,10 @@ exercise.
 
 ```bash
 python3 compare_dependency-solution.py --workers=2 BRCA KRAS PIK3CA
+python3 plot_dependency.py BRCA
+
 Rscript compare_dependency-solution.r --workers=2 BRCA KRAS PIK3CA
+Rscript plot_dependency.r BRCA
 ```
 
 ## 4. Submit the comparison and its plot

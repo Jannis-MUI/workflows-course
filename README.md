@@ -65,6 +65,9 @@ python3 plot_dependency.py
 Processing writes `compare_dependency.tsv` with group counts and posterior
 summaries for KRAS and PIK3CA. Plotting reads that table and writes
 `plot_dependency.pdf`. Both scripts use these fixed names in the working directory.
+The comparison solutions append the reference code to the table filename, as in
+`compare_dependency-BRCA.tsv`. Pass the same code to the plot script to read that
+table and write `plot_dependency-BRCA.pdf`.
 
 ### Exercises
 
