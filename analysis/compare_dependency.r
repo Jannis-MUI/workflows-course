@@ -34,4 +34,4 @@ for (gene in genes) {
     results <- rbind(results, fit(gene, data, cohort))
 }
 
-write.table(results, "compare_dependency.tsv", sep = "\t", row.names = FALSE)
+write.table(results, "compare_dependency-BRCA.tsv", sep = "\t", row.names = FALSE)

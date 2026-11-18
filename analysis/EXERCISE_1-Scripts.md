@@ -14,8 +14,9 @@ The starter comparison scripts are [compare_dependency.py](compare_dependency.py
 for Python and [compare_dependency.r](compare_dependency.r) for R.
 
 Inspect the starter, make it executable, and run it directly. Explain how its
-shebang selects the interpreter. Save the TSV and render it with the plotting
-script. The starter fits `score ~ is_cohort` for KRAS and PIK3CA with LUAD as the
+shebang selects the interpreter. Run `plot_dependency.py` or `plot_dependency.r`
+to read `compare_dependency-BRCA.tsv` and write `plot_dependency-BRCA.pdf`.
+The starter fits `score ~ is_cohort` for KRAS and PIK3CA with LUAD as the
 baseline. Each fit estimates the BRCA minus LUAD difference in mean gene
 effect. The TSV has one row per gene with measured model counts and a
 posterior median and 95% credible interval for the difference.
@@ -34,8 +35,9 @@ measured scores and their `is_cohort` indicators for each gene before calling it
    Use `argparse` in Python or `docopt` in R. Code LUAD as `is_cohort = 0` and
    the comparison cohort as `is_cohort = 1`. Use `BRCA` to check your results
    against the starter, then use `LUSC` to compare lung squamous cell
-   carcinoma against LUAD. Put the comparison cohort code before the extension,
-   as in `compare_dependency-BRCA.tsv`.
+   carcinoma against LUAD. Generalize the filenames in both scripts using
+   the cohort code before the extension. The plot script takes the same
+   cohort code as its argument.
 
 ## 3. Run one MCMC fit per worker
 

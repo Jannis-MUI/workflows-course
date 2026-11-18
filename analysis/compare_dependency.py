@@ -45,7 +45,7 @@ for gene, rows in groups.items():
     is_cohort, score = zip(*rows)
     results.append(fit(gene, is_cohort, score, COHORT))
 
-with open("compare_dependency.tsv", "w", newline="") as target:
+with open("compare_dependency-BRCA.tsv", "w", newline="") as target:
     writer = csv.DictWriter(target, fieldnames=list(results[0]), delimiter="\t")
     writer.writeheader()
     writer.writerows(results)
