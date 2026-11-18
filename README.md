@@ -1,7 +1,7 @@
 # Large-Scale Data Analysis and Workflows
 
-Two practical sessions: a refresher on Linux, Git, Slurm, and tmux, followed by
-R/Python scripting and reproducible workflows with Snakemake.
+Two practical sessions cover Linux, Git, Slurm, and tmux, followed by tidy data
+preparation, parallel MCMC in R or Python, and workflows with Snakemake.
 
 ## Get started
 
@@ -28,24 +28,27 @@ A gene is a dependency when its loss reduces growth or survival, with
 [more negative gene-effect scores](https://forum.depmap.org/t/dependent-cell-line-list/366)
 indicating stronger dependency.
 
-Compare KRAS knockout scores in lung adenocarcinoma (LUAD) models grouped by
-DepMap's hotspot mutation annotation. The analysis joins model metadata,
-somatic mutations, gene effects, and expression data, then summarizes and plots
-the groups.
+Compare gene dependency between lung adenocarcinoma (LUAD) and breast invasive
+carcinoma (BRCA) models. Join model metadata to gene-effect scores and fit a
+Bayesian linear regression by MCMC for each gene. The plot shows the estimated
+LUAD minus BRCA difference and its 95% credible interval.
 
-There are separate processing and plotting scripts for R and Python. R uses
-base R; Python processing uses its standard library and plotting uses Matplotlib.
+The R starter uses base R to read selected columns and prepare the data.
+It uses rstanarm to fit the model.
+The Python starter uses the standard-library CSV reader, NumPy, and PyMC.
+Python plotting uses Matplotlib.
 
 ### Run
 
 From the repository root, initialize the data, then enter `analysis/`:
 
 ```bash
-make -C data check
+make -C data Model.csv CRISPRGeneEffect.csv
+(cd data && md5sum --check --ignore-missing md5sums.txt)
 cd analysis
 ```
 
-This downloads the four DepMap files into `data/` and verifies their checksums.
+This downloads the two required DepMap files into `data/` and verifies their checksums.
 Run the scripts from `analysis/`, choosing either R:
 
 ```bash
@@ -60,12 +63,11 @@ python3 compare_dependency.py
 python3 plot_dependency.py
 ```
 
-Processing writes `compare_dependency.tsv`, containing group counts and summary
-statistics. Plotting reads that table and writes `plot_dependency.pdf`. Both
-files are saved in `analysis/`.
+Processing writes `compare_dependency.tsv` with group counts and posterior
+summaries for KRAS and PIK3CA. Plotting reads that table and writes
+`plot_dependency.pdf`. Both scripts use these fixed names in the working directory.
 
 ### Exercises
 
-1. [Scripts](analysis/EXERCISE_1-Scripts.md)
-2. [Slurm](analysis/EXERCISE_2-Slurm.md)
-3. [Workflows](analysis/EXERCISE_3-Workflows.md)
+1. [Scripts, tidy data, and parallel MCMC](analysis/EXERCISE_1-Scripts.md)
+2. [Workflows](analysis/EXERCISE_2-Workflows.md)

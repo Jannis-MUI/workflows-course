@@ -7,6 +7,9 @@
 # Analysis outputs
 /analysis/compare_dependency.tsv
 /analysis/plot_dependency.pdf
+/analysis/compare-*.log
+/analysis/plot-*.log
+/analysis/results/
 
 # Incomplete downloads
 *.part

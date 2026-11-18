@@ -1,46 +1,60 @@
-# Exercise 1: Scripts
+# Exercise 1 — Tidy data and parallel MCMC
 
-Start with the setup and analysis description in the [main README](../README.md).
-Run the scripts from `analysis/` and choose either R or Python.
+Follow the [main README](../README.md) to prepare the two input files. Work
+from `analysis/` and choose either R or Python.
 
-1. **Permissions and shebangs.** Inspect the scripts' permissions, make the two
-   scripts in your chosen language executable, and run them directly with
-   `./compare_dependency.r` and `./plot_dependency.r` (or their Python versions).
-   Explain how the shebang chooses the interpreter.
-2. **Command-line arguments.** Replace the hardcoded gene, disease, data
-   directory, and output table path with arguments. Give the plotting script
-   arguments for its input table and output PDF. Preserve the current values as
-   defaults. Keep both results for an analysis together, with the filenames
-   `compare_dependency.tsv` and `plot_dependency.pdf`, creating output
-   directories as needed.
-3. **A second oncogene: PIK3CA.** Repeat the LUAD analysis for **PIK3CA**, changing
-   the mutation grouping, gene-effect measurements, and expression together.
-   PIK3CA has recurrent activating hotspot mutations and provides another
-   oncogene-dependency question; its role in breast cancer is described in
-   [Vasan et al., 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC7173400/).
-   Compare the hotspot and reference group sizes and median differences with
-   KRAS. Save the PIK3CA results separately so the KRAS results remain available.
-4. **BRCA versus LUAD.** Run PIK3CA for both `BRCA` and `LUAD`, then compare the
-   group counts, median gene effects, and within-disease median differences.
-   Does the smaller hotspot group support the same strength of interpretation?
-   Use the exact `OncotreeCode` values in `Model.csv`: `BRCA` selects that coded
-   subset, while other breast models have separate codes such as `IDC` and
-   `ILC`. Save each gene/disease combination in its own directory, for example
-   `results/PIK3CA/BRCA/compare_dependency.tsv` and
-   `results/PIK3CA/BRCA/plot_dependency.pdf`.
-5. **Rewrite with dplyr or pandas.** Rewrite `compare_dependency.r` using
-   **dplyr**, or `compare_dependency.py` using **pandas**. Express the filtering,
-   joins, grouping, and summaries with your chosen library. Keep the same
-   command-line arguments, mutation definitions, missing-data handling, and
-   output columns so the plotting script can still read the table. Save the
-   original KRAS/LUAD summary before rewriting, rerun the calculation, and
-   compare group counts and summary values, allowing for numeric rounding.
-   Which parts become easier to read, and which still need care?
-6. **Share your solution in a pull request.** Fork the original course
-   repository if needed and create a branch for your rewrite. Replace the
-   processing script at its existing path (`analysis/compare_dependency.r` or
-   `analysis/compare_dependency.py`), commit it, and push the branch to your
-   fork. Open a pull request against the original course repository, focused
-   on that file. Describe the library you used, the main changes, and how you
-   confirmed that the results agree. We will review the code in the different
-   pull requests together and compare the approaches.
+## 1. Establish a baseline
+
+Inspect the starter, make it executable, and run it directly. Explain how its
+shebang selects the interpreter. Save the TSV and render it with the plotting
+script. The starter fits `score ~ is_luad` for KRAS and PIK3CA in LUAD and BRCA.
+Each fit estimates the LUAD minus BRCA difference in mean gene effect. The TSV
+has one row per gene with measured model counts and a posterior median and 95%
+credible interval for the difference.
+
+## 2. Rewrite the comparison with pandas or dplyr
+
+Keep the supplied `fit()` function at the top of the script unchanged. Prepare
+measured scores and their `is_luad` indicators for each gene before calling it.
+
+1. Select `ModelID` and `OncotreeCode` from the metadata and just the requested
+   gene columns from the wide matrix. Match by `ModelID` and filter to LUAD and
+   the requested reference.
+2. Reshape to one row per model and gene, omit missing scores, and group by gene
+   for the fits. Check that the join preserves one row per model before reshaping.
+3. Accept the reference and gene symbols on the command line.
+   Compare the LUAD–BRCA result against the starter in your chosen language.
+   Save a copy of the BRCA table before running LUAD–LUSC. Each run writes
+   `compare_dependency.tsv` in the working directory.
+
+## 3. Run one MCMC fit per worker
+
+Use a serial loop first. Then dispatch the same function once per gene with
+Dask processes or `clustermq::Q()`. For R, set
+`options(clustermq.scheduler = "MULTIPROCESS")` in the R startup profile
+to run local processes. Each fit uses one CPU. Run with one and two workers
+and compare the elapsed time and the TSV contents. On Slurm, run the driver
+and its local workers inside a CPU allocation with at least as many CPUs
+as workers.
+
+The solutions use `argparse`, pandas, Dask, and PyMC in
+[Python](compare_dependency-solution.py), and `docopt`, dplyr, readr, tidyr,
+clustermq, and rstanarm in [R](compare_dependency-solution.r). Both accept
+`--workers` and an optional `--data-dir`. Use at most five workers for this
+exercise.
+
+```bash
+python3 compare_dependency-solution.py --workers=2 BRCA KRAS PIK3CA
+Rscript compare_dependency-solution.r --workers=2 BRCA KRAS PIK3CA
+```
+
+## 4. Submit the comparison and its plot
+
+Write a Bash launcher that submits the starter with one CPU, captures its
+job ID with `sbatch --parsable`, and immediately submits plotting with
+`--dependency=afterok:<job-id>`. Run both jobs from `analysis/` and use
+separate log names with `%j`. Verify the outcomes with `sacct`. The supplied
+Python example runs with `bash submit_dependency_solution.sh` from
+`analysis/`.
+[Submission script](submit_dependency_solution.sh) ·
+[Slurm sbatch reference](https://slurm.schedmd.com/sbatch.html)
