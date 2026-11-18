@@ -6,27 +6,27 @@ import pymc as pm
 
 
 # Use this fit unchanged throughout the exercise.
-def fit(gene, is_luad, score, reference):
-    is_luad, score = np.asarray(is_luad, dtype=float), np.asarray(score, dtype=float)
-    n_luad = int(is_luad.sum())
+def fit(gene, is_cohort, score, cohort):
+    is_cohort, score = np.asarray(is_cohort, dtype=float), np.asarray(score, dtype=float)
+    n_cohort = int(is_cohort.sum())
 
     with pm.Model():
         baseline = pm.Normal("baseline")
         difference = pm.Normal("difference")
-        pm.Normal("score", baseline + difference * is_luad, pm.HalfNormal("sigma"), observed=score)
+        pm.Normal("score", baseline + difference * is_cohort, pm.HalfNormal("sigma"), observed=score)
         draws = pm.sample(500, tune=500, chains=4, cores=1, random_seed=42, progressbar=False)
 
     lower, median, upper = np.quantile(draws.posterior["difference"].values, [0.025, 0.5, 0.975])
-    return dict(gene=gene, reference=reference, n_luad=n_luad, n_reference=len(score) - n_luad,
+    return dict(gene=gene, cohort=cohort, n_luad=len(score) - n_cohort, n_cohort=n_cohort,
                 lower=lower, median=median, upper=upper)
 
 
 GENES = ("KRAS", "PIK3CA")
-REFERENCE = "BRCA"
+COHORT = "BRCA"
 
 with open("../data/Model.csv", newline="") as source:
-    models = {row["ModelID"]: int(row["OncotreeCode"] == "LUAD")
-              for row in csv.DictReader(source) if row["OncotreeCode"] in ("LUAD", REFERENCE)}
+    models = {row["ModelID"]: int(row["OncotreeCode"] == COHORT)
+              for row in csv.DictReader(source) if row["OncotreeCode"] in ("LUAD", COHORT)}
 
 with open("../data/CRISPRGeneEffect.csv", newline="") as source:
     rows = csv.reader(source)
@@ -42,8 +42,8 @@ with open("../data/CRISPRGeneEffect.csv", newline="") as source:
 
 results = []
 for gene, rows in groups.items():
-    is_luad, score = zip(*rows)
-    results.append(fit(gene, is_luad, score, REFERENCE))
+    is_cohort, score = zip(*rows)
+    results.append(fit(gene, is_cohort, score, COHORT))
 
 with open("compare_dependency.tsv", "w", newline="") as target:
     writer = csv.DictWriter(target, fieldnames=list(results[0]), delimiter="\t")

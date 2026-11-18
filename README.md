@@ -28,10 +28,10 @@ A gene is a dependency when its loss reduces growth or survival, with
 [more negative gene-effect scores](https://forum.depmap.org/t/dependent-cell-line-list/366)
 indicating stronger dependency.
 
-Compare gene dependency between lung adenocarcinoma (LUAD) and breast invasive
-carcinoma (BRCA) models. Join model metadata to gene-effect scores and fit a
-Bayesian linear regression by MCMC for each gene. The plot shows the estimated
-LUAD minus BRCA difference and its 95% credible interval.
+Use lung adenocarcinoma (LUAD) as the baseline for comparing gene dependency
+in breast invasive carcinoma (BRCA) models. Join model metadata to gene-effect
+scores and fit a Bayesian linear regression by MCMC for each gene. The plot
+shows the estimated BRCA minus LUAD difference and its 95% credible interval.
 
 The R starter uses base R to read selected columns and prepare the data.
 It uses rstanarm to fit the model.
@@ -65,9 +65,9 @@ python3 plot_dependency.py
 Processing writes `compare_dependency.tsv` with group counts and posterior
 summaries for KRAS and PIK3CA. Plotting reads that table and writes
 `plot_dependency.pdf`. Both scripts use these fixed names in the working directory.
-The comparison solutions append the reference code to the table filename, as in
-`compare_dependency-BRCA.tsv`. Pass the same code to the plot script to read that
-table and write `plot_dependency-BRCA.pdf`.
+The comparison solutions append the comparison cohort code to the table
+filename, as in `compare_dependency-BRCA.tsv`. Pass the same code to the plot
+script to read that table and write `plot_dependency-BRCA.pdf`.
 
 ### Exercises
 
