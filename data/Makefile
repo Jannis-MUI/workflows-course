@@ -2,7 +2,7 @@
 # https://doi.org/10.25452/figshare.plus.27993248.v1
 # Keep the reference checksums in md5sums.txt independent of the downloads.
 
-FILES := Model.csv CRISPRGeneEffect.csv OmicsExpressionProteinCodingGenesTPMLogp1.csv OmicsSomaticMutations.csv
+FILES := Model.csv CRISPRGeneEffect.csv
 
 .PHONY: all check
 .DELETE_ON_ERROR:
@@ -14,12 +14,6 @@ Model.csv:
 
 CRISPRGeneEffect.csv:
 	curl --fail --location --retry 3 --output $@ https://ndownloader.figshare.com/files/51064667
-
-OmicsExpressionProteinCodingGenesTPMLogp1.csv:
-	curl --fail --location --retry 3 --output $@ https://ndownloader.figshare.com/files/51065489
-
-OmicsSomaticMutations.csv:
-	curl --fail --location --retry 3 --output $@ https://ndownloader.figshare.com/files/51065732
 
 check: $(FILES) md5sums.txt
 	md5sum --check md5sums.txt

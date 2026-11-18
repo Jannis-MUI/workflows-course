@@ -43,8 +43,7 @@ Python plotting uses Matplotlib.
 From the repository root, initialize the data, then enter `analysis/`:
 
 ```bash
-make -C data Model.csv CRISPRGeneEffect.csv
-(cd data && md5sum --check --ignore-missing md5sums.txt)
+make -C data check
 cd analysis
 ```
 
