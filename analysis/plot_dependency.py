@@ -4,8 +4,13 @@ import csv
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import argparse
 
-with open("compare_dependency-BRCA.tsv", newline="") as source:
+parser = argparse.ArgumentParser()
+parser.add_argument("cohort")
+cohort = parser.parse_args().cohort
+
+with open(f"compare_dependency-{cohort}.tsv", newline="") as source:
     rows = list(csv.DictReader(source, delimiter="\t"))
 cohort = rows[0]["cohort"]
 
@@ -20,4 +25,4 @@ axis.invert_yaxis()
 axis.set_xlabel(f"{cohort} minus LUAD gene effect (95% credible interval)")
 axis.set_title(f"{cohort} vs LUAD")
 figure.tight_layout()
-figure.savefig("plot_dependency-BRCA.pdf")
+figure.savefig(f"plot_dependency-{cohort}.pdf")

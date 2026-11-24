@@ -1,0 +1,45 @@
+metadata:
+       ModelID OncotreeCode
+0  ACH-000001        HGSOC
+1  ACH-000002          AML
+2  ACH-000003         COAD
+3  ACH-000004          AML
+4  ACH-000005          AML
+genes:
+                 KRAS    PIK3CA
+ModelID                       
+ACH-000001 -0.312027 -0.386789
+ACH-000004 -0.236416 -0.413521
+ACH-000005 -0.714670 -0.469267
+ACH-000007 -2.193645 -0.543013
+ACH-000009 -1.312382 -0.353138
+merged:
+        ModelID OncotreeCode      KRAS    PIK3CA
+6   ACH-000012         LUAD -0.153884 -0.395838
+13  ACH-000021         LUAD -0.429408 -0.258355
+20  ACH-000029         LUAD -0.167081 -0.398014
+21  ACH-000030         LUAD -0.087464 -0.615485
+93  ACH-000161         LUAD -0.215712 -0.394294
+(74, 4)
+df: 
+       ModelID OncotreeCode  Gene     value
+0  ACH-000012         LUAD  KRAS -0.153884
+1  ACH-000021         LUAD  KRAS -0.429408
+2  ACH-000029         LUAD  KRAS -0.167081
+3  ACH-000030         LUAD  KRAS -0.087464
+4  ACH-000161         LUAD  KRAS -0.215712
+(148, 4)
+shape after dropna:  (148, 4)
+      ModelID OncotreeCode  Gene     value  is_cohort
+0  ACH-000012         LUAD  KRAS -0.153884          0
+1  ACH-000021         LUAD  KRAS -0.429408          0
+2  ACH-000029         LUAD  KRAS -0.167081          0
+3  ACH-000030         LUAD  KRAS -0.087464          0
+4  ACH-000161         LUAD  KRAS -0.215712          0
+TSV contents identical:  True
+avg serial time:  2.9252736792899667
+n_workers: 1, time: 9.718327376805245
+n_workers: 2, time: 9.559443277399987
+n_workers: 3, time: 8.962412942410447
+n_workers: 4, time: 8.553616098407655
+n_workers: 5, time: 9.352809194708243
